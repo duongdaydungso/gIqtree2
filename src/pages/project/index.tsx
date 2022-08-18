@@ -130,7 +130,10 @@ function Project({ onOpenProject } : { onOpenProject?: (path: string) => void })
         }
         default: {
             main = (
-                <MainContent content={error ? error : currentFile ? currentContent : log.join('\n\n')} />
+                <MainContent
+                    content={error ? error : currentFile ? currentContent : log.join('\n\n')}
+                    isTreeFile={currentFile ? currentFile.endsWith(".treefile") : false}
+                />
             );
             break;
         }
