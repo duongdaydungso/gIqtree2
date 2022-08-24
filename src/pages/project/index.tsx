@@ -20,7 +20,7 @@ import { getBinaryPath } from '../../platform';
 import listDependentFileEntries from '../../utils/listDependentFileEntries';
 import remap from '../../utils/remapInputFiles';
 import Sidebar from './sidebar';
-import MainContent from './mainContent';
+import MainContent, { TreeFileType } from './mainContent';
 
 enum CurrentScreen {
     Main = 1,
@@ -132,7 +132,21 @@ function Project({ onOpenProject } : { onOpenProject?: (path: string) => void })
             main = (
                 <MainContent
                     content={error ? error : currentFile ? currentContent : log.join('\n\n')}
-                    isTreeFile={currentFile ? currentFile.endsWith(".treefile") : false}
+                    assessmentSettings={settings ? settings.assessment : null}
+                    fileType=
+                    {
+                        currentFile
+                        ? ( currentContent[0] === "("
+                            ? ( currentFile.endsWith(".treefile")
+                                ? TreeFileType.TreeFile
+                                : ( currentFile.endsWith(".contree")
+                                    ? TreeFileType.ContreeFile
+                                    : ( currentFile.endsWith(".boottrees")
+                                        ? TreeFileType.BoottreesFile
+                                        : null ) ) )
+                            : null )
+                        : null
+                    }
                 />
             );
             break;
