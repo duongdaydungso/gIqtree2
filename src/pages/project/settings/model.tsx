@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import SettingRowMultipleChoice from "../../../components/settingrowmultiplechoice";
 import { SequenceType } from "../../../interfaces/dataSettings";
-import { AutoMergePartitionsAlgorithms, DefaultRateCategories, getAvailableFrequencies, ModelSettings, SubstitutionModel, SubstitutionModels } from "../../../interfaces/modelSettings";
+import { AutoMergePartitionsAlgorithms, DefaultRateCategories, getAvailableFrequencies, ModelSettings, SubstitutionModel, SubstitutionModels, RHASModels } from "../../../interfaces/modelSettings";
 
 function Model(
     { isMultipleGene, sequenceType, settings, onChange }:
@@ -75,8 +75,18 @@ function Model(
                     {proportionOfInvariableSites ? 'Enabled' : 'Disabled'}
                 </button>
             </div>
+            
+            {substitutionModel && (<SettingRowMultipleChoice
+                label="Rate heterogeneity across sites"
+                options={
+                    [{ name: 'None', type: undefined }, ...RHASModels]
+                        .map(e => ({ name: e.name, value: e.type }))
+                }
+                onChosen={value => onChange?.({ ...settings, rhasModel: value })}
+                value={[rhasModel]}
+            />)}
 
-            {rhasModel && (
+            {substitutionModel && rhasModel && (
                 <div className="setting-row">
                     <b>Rate categories number :</b>
                     <input
