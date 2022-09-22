@@ -133,6 +133,7 @@ function Project({ onOpenProject } : { onOpenProject?: (path: string) => void })
                 <MainContent
                     content={error ? error : currentFile ? currentContent : log.join('\n\n')}
                     assessmentSettings={settings ? settings.assessment : null}
+                    isExecuting={(currentScreen === CurrentScreen.Main) && (currentFile === undefined) && executing}
                     fileType=
                     {
                         currentFile
@@ -143,7 +144,9 @@ function Project({ onOpenProject } : { onOpenProject?: (path: string) => void })
                                     ? TreeFileType.ContreeFile
                                     : ( currentFile.endsWith(".boottrees")
                                         ? TreeFileType.BoottreesFile
-                                        : null ) ) )
+                                        : ( currentFile.endsWith(".ufboot")
+                                            ? TreeFileType.UFBootFile
+                                            : null ) ) ) )
                             : null )
                         : null
                     }

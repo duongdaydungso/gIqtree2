@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import { PhylotreeVisualization } from "phylotree-visualization-demo";
 
@@ -10,17 +10,24 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export enum TreeFileType {
     TreeFile,
     ContreeFile,
-    BoottreesFile
+    BoottreesFile,
+    UFBootFile
 }
 
-function MainContent({ content, fileType, assessmentSettings }: { content: string, fileType: TreeFileType | null, assessmentSettings: AssessmentSettings | null }) {
-    // TODO: Implement tree viewing here - just encapsulate the logic,
-    // including switching between visualized/plain text
+function MainContent({ content, fileType, assessmentSettings, isExecuting }: { content: string, fileType: TreeFileType | null, assessmentSettings: AssessmentSettings | null, isExecuting: boolean }) {
+    const contentRef = useRef<HTMLDivElement>(null);
+    
     const [currentTreeFormInput, setCurrentTreeFormInput] = useState<string>("1");
     const [currentTree, setCurrentTree] = useState<number>(0);
     const [supportValue, setSupportValue] = useState<string | undefined>(undefined);
     const [tree, setTree] = useState<React.ReactElement | null>(null);
     const [treeArray, setTreeArray] = useState<Array<string>>([]);
+
+    useEffect(() => {
+        if (fileType === null && content && isExecuting && contentRef.current) {
+            contentRef.current?.scrollIntoView({ behavior: "smooth" })
+        }
+    });
 
     useEffect(() => {
         if (assessmentSettings && fileType === TreeFileType.TreeFile) {
@@ -94,7 +101,7 @@ function MainContent({ content, fileType, assessmentSettings }: { content: strin
     if (fileType !== null && content) {
         // RENDER TREE
         return (
-            <pre className='h-[87vh] overflow-y-scroll snap-y snap-mandatory snap-end' style={{ width: '80vw' }}>
+            <div className='h-[87vh] overflow-y-scroll snap-y snap-mandatory snap-end' style={{ width: '80vw' }}>
                 <div className="columns-4 py-3">
                     <div className="text-right text-xl py-2 pl-4">Current tree (total {treeArray.length} trees) :</div>
                     <div className="text-right">
@@ -126,7 +133,7 @@ function MainContent({ content, fileType, assessmentSettings }: { content: strin
                 </div>
 
                 {(!isNaN(currentTree) && currentTree >= 0 && currentTree < treeArray.length && treeArray.length > 0) ? tree : null}
-            </pre>
+            </div>
         );
     }
 
@@ -134,6 +141,7 @@ function MainContent({ content, fileType, assessmentSettings }: { content: strin
     return (
         <pre className='h-[87vh] overflow-y-scroll snap-y snap-mandatory snap-end' style={{ width: '80vw' }}>
             {content}
+            <div ref={contentRef} />
         </pre>
     );
 }
