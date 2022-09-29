@@ -59,8 +59,7 @@ export function prepareCommand (setting: Settings, basename: string, outputPath?
                     ...modelSetting(setting),
                     ...othersSetting(
                         setting,
-                        outputPath ? join(outputPath, 'loci') : undefined,
-                        commonThreadCount
+                        outputPath ? join(outputPath, 'loci') : undefined
                     )
                 ];
                 geneTree.push(...args);

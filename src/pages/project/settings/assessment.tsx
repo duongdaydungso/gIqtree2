@@ -164,7 +164,7 @@ function Assessment(
             </div>
             {singleBranchTests?.includes(SingleBranchTest.SH_aLRT) &&
                 <div className="setting-row">
-                    <b>Number of aLRT replicates :</b>
+                    <b>Number of SH-aLRT replicates :</b>
                     <input
                         className="border-2 p-2 rounded-lg basis-1/2"
                         type="number"

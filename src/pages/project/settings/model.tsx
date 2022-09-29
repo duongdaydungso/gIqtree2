@@ -1,10 +1,10 @@
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SettingRowMultipleChoice from "../../../components/settingrowmultiplechoice";
 import { SequenceType } from "../../../interfaces/dataSettings";
-import { AutoMergePartitionsAlgorithms, DefaultRateCategories, getAvailableFrequencies, ModelSettings, SubstitutionModel, SubstitutionModels, RHASModels } from "../../../interfaces/modelSettings";
+import { AutoMergePartitionsAlgorithms, DefaultRateCategories, getAvailableFrequencies, ModelSettings, SubstitutionModel, SubstitutionModels, RHASModels, RHASModel } from "../../../interfaces/modelSettings";
 
 function Model(
     { isMultipleGene, sequenceType, settings, onChange }:
@@ -20,6 +20,13 @@ function Model(
     availableModels.unshift(undefined);
 
     let availableFrequencies = getAvailableFrequencies(sequenceType);
+
+    useEffect(() => {
+        if (!substitutionModel && !rhasModel) {
+            onChange?.({ ...settings, rhasModel: RHASModel.FreeRate })
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [substitutionModel]);
 
     return (
         <div>
@@ -76,15 +83,27 @@ function Model(
                 </button>
             </div>
             
-            {substitutionModel && (<SettingRowMultipleChoice
-                label="Rate heterogeneity across sites"
-                options={
-                    [{ name: 'None', type: undefined }, ...RHASModels]
-                        .map(e => ({ name: e.name, value: e.type }))
-                }
-                onChosen={value => onChange?.({ ...settings, rhasModel: value })}
-                value={[rhasModel]}
-            />)}
+            {substitutionModel ?
+                (<SettingRowMultipleChoice
+                    label="Rate heterogeneity across sites"
+                    options={
+                        [{ name: 'None', type: undefined }, ...RHASModels]
+                            .map(e => ({ name: e.name, value: e.type }))
+                    }
+                    onChosen={value => onChange?.({ ...settings, rhasModel: value })}
+                    value={[rhasModel]}
+                />)
+                : 
+                (<SettingRowMultipleChoice
+                        label="Rate heterogeneity across sites"
+                        options={
+                            [...RHASModels]
+                                .filter(e => e.type).map(e => ({ name: e.name, value: e.type }))
+                        }
+                        onChosen={value => onChange?.({ ...settings, rhasModel: value })}
+                        value={[rhasModel]}
+                />)
+            }
 
             {substitutionModel && rhasModel && (
                 <div className="setting-row">
