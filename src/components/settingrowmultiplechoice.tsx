@@ -20,7 +20,9 @@ function SettingRowMultipleChoice<T extends Primitive>(
                         return (
                             <button
                                 onClick={() => onChosen?.(current.value)}
-                                className={"py-2 px-4 border-r border-y hover:bg-gray-200 hover:text-black " + rounded + ' ' + chosen}>
+                                className={"py-2 px-4 border-r border-y hover:bg-gray-200 hover:text-black " + rounded + ' ' + chosen}
+                                key={index}
+                            >
                                 {current.name}
                             </button>
                         )

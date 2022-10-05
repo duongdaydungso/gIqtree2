@@ -43,6 +43,7 @@
     "react-scripts": "5.0.0",
     "react-timeago": "^6.2.1",
     "react-waypoint": "^10.1.0",
+    "replace-in-file": "^6.3.5",
     "rereadable-stream": "^1.4.13",
     "rimraf": "^3.0.2",
     "sql.js": "^1.6.2",

@@ -19,6 +19,7 @@ import { getOutputFolder, getInputFolder } from './projectFolder';
 import { getBinaryPath } from '../../platform';
 import listDependentFileEntries from '../../utils/listDependentFileEntries';
 import remap from '../../utils/remapInputFiles';
+import editPartitionFile from '../../utils/editPartitionFile';
 import Sidebar from './sidebar';
 import MainContent, { TreeFileType } from './mainContent';
 
@@ -114,6 +115,7 @@ function Project({ onOpenProject } : { onOpenProject?: (path: string) => void })
                     }
                     onReady={(copied) => {
                         let remapped = remap(settings!, copied);
+                        editPartitionFile(remapped.data.partitionFile);
                         writeSettingsFileSync(path, remapped)
                         setOriginalSettings(remapped);
                         setSettings(remapped);

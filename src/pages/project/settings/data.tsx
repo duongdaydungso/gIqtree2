@@ -54,6 +54,7 @@ function Data({ settings, onChange }: { settings: DataSettings, onChange?: (newS
                         <div className="grid grid-cols-12 gap-4">
                             {Codons.map((current, index) => (
                                 <button
+                                    key={index}
                                     onClick={() => {
                                         onChange?.({ ...settings, codonType: current.type });
                                         setCodonSettingOpen(false);
@@ -112,7 +113,7 @@ function Data({ settings, onChange }: { settings: DataSettings, onChange?: (newS
                     <div>{'\u00a0'.repeat(48)}</div>
                     <div className="grow">
                         {(alignmentFiles ?? []).map((file, index) => (
-                            <div className="alignment-input-row">
+                            <div className="alignment-input-row" key={index}>
                                 <div className="flex flex-row items-center">
                                     <FontAwesomeIcon icon={faFile} className="alignment-input-row-icon" />
                                     {file}

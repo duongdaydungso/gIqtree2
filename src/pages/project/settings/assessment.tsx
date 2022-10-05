@@ -38,6 +38,7 @@ function Assessment(
                                 : 'border-black';
                             return (
                                 <button
+                                    key={index}
                                     onClick={() => {
                                         onChange?.({
                                             ...settings,
@@ -94,6 +95,7 @@ function Assessment(
                                     : 'border-black';
                                 return (
                                     <button
+                                        key={index}
                                         onClick={() => {
                                             onChange?.({
                                                 ...settings,
@@ -113,7 +115,7 @@ function Assessment(
                 <b>Single branch tests :</b>
                 <div className="flex flex-row gap-4">
                     {SingleBranchTests
-                        .map(group => {
+                        .map((group, index) => {
                             let buttons = group.map((current, index) => {
                                 let rounded = '';
                                 let singleBranchTests = settings.singleBranchTests || [];
@@ -128,6 +130,7 @@ function Assessment(
 
                                 return (
                                     <button
+                                        key={index}
                                         onClick={() => {
                                             let outSet = new Set(singleBranchTests);
                                             if (group.length === 1) {
@@ -153,7 +156,7 @@ function Assessment(
                             })
 
                             return (
-                                <div className="flex flex-row">
+                                <div className="flex flex-row" key={index}>
                                     {buttons}
                                 </div>
                             );
